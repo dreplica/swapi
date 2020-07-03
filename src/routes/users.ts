@@ -1,10 +1,15 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-	res.send('respond with a resource');
+router.get('/', (_, res:Response)=> {
+	res.status(200).send('Hello please check the github for documentations');
 });
+
+router.get('/movies', (req:Request, res:Response)=> {
+	res.status(200).send('Hello please check the github for documentations');
+});
+
 
 export default router;

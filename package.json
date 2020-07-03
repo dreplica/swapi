@@ -6,19 +6,22 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "ts-config": "^20.10.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.6",
     "@types/http-errors": "^1.6.3",
     "@types/morgan": "^1.9.1",
+    "@types/node": "^14.0.14",
     "typescript": "^3.9.6"
   }
 }
