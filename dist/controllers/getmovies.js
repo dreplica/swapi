@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMovies = void 0;
+exports.addComments = exports.getMovies = void 0;
 var axios_1 = __importDefault(require("axios"));
 var getCommentCount = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -53,7 +53,7 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
+                _a.trys.push([0, 3, , 4]);
                 return [4 /*yield*/, axios_1.default.get('https://swapi.dev/api/films')];
             case 1:
                 data = (_a.sent()).data;
@@ -66,21 +66,47 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
                     }
                     return later;
                 });
-                getComment = getSort.reduce(function (acc, val) {
-                    //get movies id, query through sql for total comments
-                    var count = getCommentCount(val.episode_id);
-                    var accum = {
-                        comment_count: 5,
-                        name: val.title,
-                        opening_crawls: val.opening_crawl
-                    };
-                    return acc.concat(accum);
-                }, []);
-                return [2 /*return*/, getComment];
+                return [4 /*yield*/, getSort.reduce(function (acc, val) { return __awaiter(void 0, void 0, void 0, function () {
+                        var count, accum, _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0: return [4 /*yield*/, getCommentCount(val.episode_id)];
+                                case 1:
+                                    count = _b.sent();
+                                    _a = {};
+                                    return [4 /*yield*/, count];
+                                case 2:
+                                    accum = (_a.comment_count = _b.sent(),
+                                        _a.name = val.title,
+                                        _a.opening_crawls = val.opening_crawl,
+                                        _a);
+                                    acc.then(function (res) {
+                                        res.push(accum);
+                                    });
+                                    return [2 /*return*/, acc];
+                            }
+                        });
+                    }); }, Promise.resolve([]))];
             case 2:
+                getComment = _a.sent();
+                return [2 /*return*/, { data: getComment }];
+            case 3:
                 error_1 = _a.sent();
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                return [2 /*return*/, { error: error_1.message }];
+            case 4: return [2 /*return*/];
         }
+    });
+}); };
+exports.addComments = function (body) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        try {
+            // const comment = db.query(sql`INSERT INTO comments
+            // VALUES(${body.id},${body.comment},current_timestamp) returning *`);
+            return [2 /*return*/, { data: 'comment' }];
+        }
+        catch (error) {
+            return [2 /*return*/, { error: "sorry couldn't add comment, please try again. Thanks" }];
+        }
+        return [2 /*return*/];
     });
 }); };

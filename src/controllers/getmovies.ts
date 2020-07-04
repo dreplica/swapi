@@ -28,24 +28,25 @@ export const getMovies = async () => {
 				name: val.title,
 				opening_crawls: val.opening_crawl
 			};
-			return acc.then((res) => {
+			acc.then((res) => {
 				res.push(accum);
 			});
+			return acc;
 		}, Promise.resolve([]));
-		return getComment;
+
+		return { data: getComment };
 	} catch (error) {
-		return { error: 'check your api or try again. Thanks' };
+		return { error: error.message };
 	}
 };
 
 export const addComments = async (body: Comment) => {
 	try {
-		// const comment = db.query(sql`INSERT INTO comments 
+		// const comment = db.query(sql`INSERT INTO comments
 		// VALUES(${body.id},${body.comment},current_timestamp) returning *`);
 
-		return {data:"comment"}
-
+		return { data: 'comment' };
 	} catch (error) {
-		return {error:"sorry couldn't add comment, please try again. Thanks"}
+		return { error: "sorry couldn't add comment, please try again. Thanks" };
 	}
 };

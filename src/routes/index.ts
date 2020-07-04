@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 
-import { getMovies } from './../controllers/getmovies';
+import { getMovies } from '../controllers/getmovies';
 
 const router = express.Router();
 

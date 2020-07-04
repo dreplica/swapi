@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "migrate":" node-pg-migrate"
   },
   "dependencies": {
     "@databases/pg": "^2.1.2",
