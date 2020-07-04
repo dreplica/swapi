@@ -106,7 +106,7 @@ exports.arrangeCharacters = function (movie, sort) {
     var result = filter.reduce(function (acc, val) {
         var person = __assign(__assign({}, val), { height: {
                 cm: val.height + 'cm',
-                feet: Math.floor(val.height * 0.0328084) + "ft"
+                feet: Math.floor(val.height * 0.0328084) + 'ft'
             } });
         return sortXtics(acc.concat(person));
     }, []);

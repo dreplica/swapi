@@ -13,7 +13,6 @@ export const getCommentCount = async (id: number) => {
 	return count[0].count;
 };
 
-
 export const arrangeComments = (comments: DB_COMMENT[]) => {
 	const copyComment: DB_COMMENT[] = JSON.parse(JSON.stringify(comments));
 
@@ -28,15 +27,14 @@ export const arrangeComments = (comments: DB_COMMENT[]) => {
 	});
 };
 
-
 export const arrangeCharacters = (movie: Character[], sort: CharacterSort) => {
 	const copyComment: Character[] = JSON.parse(JSON.stringify(movie));
 
-    const filter = copyComment.filter((character) => {
-        if (sort.filter) {
-            return character.gender.toLowerCase() === sort.filter.toLowerCase()
-        }
-        return true
+	const filter = copyComment.filter((character) => {
+		if (sort.filter) {
+			return character.gender.toLowerCase() === sort.filter.toLowerCase();
+		}
+		return true;
 	});
 
 	const sortXtics = (accum: ACCUM[]) =>
@@ -48,7 +46,6 @@ export const arrangeCharacters = (movie: Character[], sort: CharacterSort) => {
 				case 'desc':
 					if (initial.name > later.name) return -1;
 					return 1;
-
 				default:
 					return 1;
 			}
@@ -58,10 +55,10 @@ export const arrangeCharacters = (movie: Character[], sort: CharacterSort) => {
 		const person = {
 			...val,
 			height: {
-				cm: val.height+'cm',
-				feet: Math.floor(val.height * 0.0328084)+"ft"
+				cm: val.height + 'cm',
+				feet: Math.floor(val.height * 0.0328084) + 'ft'
 			}
-        };
+		};
 		return sortXtics(acc.concat(person));
 	}, []);
 
