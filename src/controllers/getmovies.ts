@@ -1,11 +1,11 @@
 import Axios from 'axios';
-import { Movies, movieAcc } from '../types/movies';
+import { Movies, movieAcc, Comment } from '../types/movies';
 
 const getCommentCount = async (id: number) => {
-    // const count = await db.query(sql`SELECT count(id) FROM comments WHERE title=${id}`)
-    // return count
-    return 5
-}
+	// const count = await db.query(sql`SELECT count(id) FROM comments WHERE title=${id}`)
+	// return count
+	return 5;
+};
 
 export const getMovies = async () => {
 	try {
@@ -22,20 +22,31 @@ export const getMovies = async () => {
 		});
 
 		const getComment = await getSort.reduce(async (acc: Promise<movieAcc[]>, val: Movies) => {
-            //get movies id, query through sql for total comments
-			const count = await getCommentCount(val.episode_id)
-			const accum:movieAcc = {
-				comment_count: await  count,
+			const count = await getCommentCount(val.episode_id);
+			const accum: movieAcc = {
+				comment_count: await count,
 				name: val.title,
 				opening_crawls: val.opening_crawl
 			};
-			return acc.then(res => {
-				res.push(accum)
-			})
-
-			// return acc
-		},Promise.resolve([]));
+			return acc.then((res) => {
+				res.push(accum);
+			});
+		}, Promise.resolve([]));
 		return getComment;
-    } catch (error) { }
-    
+	} catch (error) {
+		return { error: 'check your api or try again. Thanks' };
+	}
 };
+
+export const addComments = async (body: Comment) => {
+	try {
+		const comment = db.query(sql`INSERT INTO comments 
+		VALUES(${body.id},${body.comment},current_timestamp) returning *`);
+
+		return {data:comment}
+
+	} catch (error) {
+		return {error:"sorry couldn't add comment, please try again. Thanks"}
+	}
+};
+

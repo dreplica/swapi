@@ -1,3 +1,5 @@
+
+//for movies query
 export interface Movies {
 	characters: string[];
 	created: string;
@@ -42,4 +44,16 @@ export const initialAcc:movieAcc = {
     name: "",
     opening_crawls: "",
     comment_count: 0
+}
+
+
+//for adding comment
+export interface Comment{
+    id: string,
+    comment: string;
+}
+
+export const comment: Comment = {
+    id: "",
+    comment:""
 }
