@@ -58,7 +58,6 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
             case 1:
                 data = (_a.sent()).data;
                 copyData = JSON.parse(JSON.stringify(data.results));
-                console.log(copyData);
                 getSort = copyData.sort(function (initial, later) {
                     var initialDate = new Date(initial.release_date).getTime();
                     var laterDate = new Date(later.release_date).getTime();
@@ -105,13 +104,15 @@ exports.addComments = function (comment) { return __awaiter(void 0, void 0, void
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, db.query(sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"])), comment.id, comment.comment, comment.ipAddress))];
+                if (comment.comment.length > 500)
+                    throw new Error("Please can't exceed 500");
+                return [4 /*yield*/, db.query(sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(uuid_generate_v4(),", ",", ",", ",current_timestamp) \n\t\treturning *"], ["INSERT INTO comments\n\t\tVALUES(uuid_generate_v4(),", ",", ",", ",current_timestamp) \n\t\treturning *"])), comment.id, comment.comment, comment.ipAddress))];
             case 1:
                 commentResponse = _a.sent();
                 return [2 /*return*/, { data: commentResponse }];
             case 2:
                 error_2 = _a.sent();
-                return [2 /*return*/, { error: "sorry couldn't add comment, please try again. Thanks" }];
+                return [2 /*return*/, { error: "sorry couldn't add comment, please try again or check comment length. Thanks" }];
             case 3: return [2 /*return*/];
         }
     });
@@ -122,7 +123,7 @@ exports.getComments = function (id) { return __awaiter(void 0, void 0, void 0, f
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["SELECT ipaddress,comment,id,created \n\t\tFROM comments\n\t\tWHERE id=", ""], ["SELECT ipaddress,comment,id,created \n\t\tFROM comments\n\t\tWHERE id=", ""])), id))];
+                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["SELECT id,ipaddress,comment,created \n\t\tFROM comments\n\t\tWHERE episodeid=", ""], ["SELECT id,ipaddress,comment,created \n\t\tFROM comments\n\t\tWHERE episodeid=", ""])), id))];
             case 1:
                 comments = _a.sent();
                 orderedComments = functions_1.arrangeComments(comments);
@@ -139,24 +140,17 @@ exports.getCharacters = function (sort) { return __awaiter(void 0, void 0, void 
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log("whats hapening man", sort);
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 4, , 5]);
+                _a.trys.push([0, 3, , 4]);
                 return [4 /*yield*/, axios_1.default.get("https://swapi.dev/api/films/" + sort.movie)];
-            case 2:
+            case 1:
                 response = (_a.sent()).data;
-                console.log(response.characters);
                 return [4 /*yield*/, response.characters.reduce(function (acc, val) { return __awaiter(void 0, void 0, void 0, function () {
                         var data;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
-                                case 0: return [4 /*yield*/, axios_1.default.get(val)
-                                    // console.log('accval has come to stay :>> ', data);
-                                ];
+                                case 0: return [4 /*yield*/, axios_1.default.get(val)];
                                 case 1:
                                     data = (_a.sent()).data;
-                                    // console.log('accval has come to stay :>> ', data);
                                     acc.then(function (person) {
                                         person.push(data);
                                     });
@@ -164,14 +158,14 @@ exports.getCharacters = function (sort) { return __awaiter(void 0, void 0, void 
                             }
                         });
                     }); }, Promise.resolve([]))];
-            case 3:
+            case 2:
                 getAllCharacters = _a.sent();
                 character_1 = functions_1.arrangeCharacters(getAllCharacters, sort);
                 return [2 /*return*/, { data: character_1 }];
-            case 4:
+            case 3:
                 error_4 = _a.sent();
                 return [2 /*return*/, { error: 'Sorry we couldnt get this movie characters, can you try searching again \n' + error_4.message }];
-            case 5: return [2 /*return*/];
+            case 4: return [2 /*return*/];
         }
     });
 }); };

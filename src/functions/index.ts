@@ -9,9 +9,10 @@ interface ACCUM extends Omit<Character, 'height'> {
 }
 
 export const getCommentCount = async (id: number) => {
-	const count = await db.query(sql`SELECT count(id) FROM comments WHERE id=${id}`);
+	const count = await db.query(sql`SELECT count(episodeid) FROM comments WHERE episodeid=${id}`);
 	return count[0].count;
 };
+
 
 export const arrangeComments = (comments: DB_COMMENT[]) => {
 	const copyComment: DB_COMMENT[] = JSON.parse(JSON.stringify(comments));
@@ -26,6 +27,7 @@ export const arrangeComments = (comments: DB_COMMENT[]) => {
 		return 1;
 	});
 };
+
 
 export const arrangeCharacters = (movie: Character[], sort: CharacterSort) => {
 	const copyComment: Character[] = JSON.parse(JSON.stringify(movie));

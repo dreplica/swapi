@@ -61,7 +61,7 @@ exports.getCommentCount = function (id) { return __awaiter(void 0, void 0, void 
     var count;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, db.query(sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["SELECT count(id) FROM comments WHERE id=", ""], ["SELECT count(id) FROM comments WHERE id=", ""])), id))];
+            case 0: return [4 /*yield*/, db.query(sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["SELECT count(episodeid) FROM comments WHERE episodeid=", ""], ["SELECT count(episodeid) FROM comments WHERE episodeid=", ""])), id))];
             case 1:
                 count = _a.sent();
                 return [2 /*return*/, count[0].count];

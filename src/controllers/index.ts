@@ -15,7 +15,6 @@ export const getMovies = async () => {
 
 		const copyData = JSON.parse(JSON.stringify(data.results));
 
-		console.log(copyData);
 		const getSort = copyData.sort((initial: Movies, later: Movies) => {
 			const initialDate = new Date(initial.release_date).getTime();
 			const laterDate = new Date(later.release_date).getTime();
@@ -47,21 +46,23 @@ export const getMovies = async () => {
 
 export const addComments = async (comment: Comment) => {
 	try {
+		if (comment.comment.length > 500) throw new Error("Please can't exceed 500");
+
 		const commentResponse = await db.query(sql`INSERT INTO comments
-		VALUES(${comment.id},${comment.comment},${comment.ipAddress},current_timestamp) 
+		VALUES(uuid_generate_v4(),${comment.id},${comment.comment},${comment.ipAddress},current_timestamp) 
 		returning *`);
 
 		return { data: commentResponse };
 	} catch (error) {
-		return { error: "sorry couldn't add comment, please try again. Thanks" };
+		return { error: "sorry couldn't add comment, please try again or check comment length. Thanks" };
 	}
 };
 
 export const getComments = async (id: string) => {
 	try {
-		const comments: DB_COMMENT[] = await db.query(sql`SELECT ipaddress,comment,id,created 
+		const comments: DB_COMMENT[] = await db.query(sql`SELECT id,ipaddress,comment,created 
 		FROM comments
-		WHERE id=${id}`);
+		WHERE episodeid=${id}`);
 
 		const orderedComments = arrangeComments(comments);
 		return { data: orderedComments };
@@ -71,28 +72,21 @@ export const getComments = async (id: string) => {
 };
 
 export const getCharacters = async (sort: CharacterSort) => {
-	console.log("whats hapening man",sort)
 	try {
-		const { data:response } = await Axios.get(`https://swapi.dev/api/films/${sort.movie}`);
+		const { data: response } = await Axios.get(`https://swapi.dev/api/films/${sort.movie}`);
 
-		console.log(response.characters) 
+		const getAllCharacters = await response.characters.reduce(async (acc: Promise<Character[]>, val: string) => {
+			const { data } = await Axios.get(val);
+			acc.then((person) => {
+				person.push(data);
+			});
+			return acc;
+		}, Promise.resolve([]));
 
-		const getAllCharacters = await response.characters.reduce(
-			async (acc: Promise<Character[]>, val: string) => {
-				const {data} = await Axios.get(val)
-				// console.log('accval has come to stay :>> ', data);
-				acc.then((person) => {
-					person.push(data)
-				})
-				return acc
-			},
-			Promise.resolve([])
-		);
-
-		const character = arrangeCharacters(getAllCharacters,sort);
+		const character = arrangeCharacters(getAllCharacters, sort);
 
 		return { data: character };
 	} catch (error) {
-		return { error: 'Sorry we couldnt get this movie characters, can you try searching again \n'+error.message };
+		return { error: 'Sorry we couldnt get this movie characters, can you try searching again \n' + error.message };
 	}
 };

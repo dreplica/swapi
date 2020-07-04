@@ -61,12 +61,12 @@ router.get('/movies', function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-router.get('/comment', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router.get('/comment/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var id, _a, data, error;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                id = req.query.id;
+                id = req.params.id;
                 return [4 /*yield*/, controllers_1.getComments(id)];
             case 1:
                 _a = _b.sent(), data = _a.data, error = _a.error;

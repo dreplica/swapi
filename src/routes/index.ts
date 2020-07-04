@@ -19,8 +19,8 @@ router.get('/movies', async (req: Request, res: Response) => {
 	return res.status(404).json(error);
 });
 
-router.get('/comment', async (req: Request, res: Response) => {
-	const { id } = req.query;
+router.get('/comment/:id', async (req: Request, res: Response) => {
+	const { id } = req.params;
 
 	const { data, error } = await getComments(<string>id);
 	if (data) {
