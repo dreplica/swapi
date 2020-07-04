@@ -18,8 +18,9 @@ router.get('/movies', async (req: Request, res: Response) => {
 
 router.post('/comment', async (req: Request, res: Response) => {
   const { id, comment } = req.body
+  const ipAddress: string = req.connection.remoteAddress as string
   
-  const response = await addComments({ id, comment })
+  const response = await addComments({ id, comment,ipAddress })
   
   console.log('response was here',response)
 	res.status(200).json(response);

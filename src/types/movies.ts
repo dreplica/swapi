@@ -36,6 +36,7 @@ export const initialMovies:Movies = {
 
 export interface movieAcc{
     name: string;
+    episode_id: number;
     opening_crawls: string;
     comment_count: number;
 }
@@ -43,6 +44,7 @@ export interface movieAcc{
 export const initialAcc:movieAcc = {
     name: "",
     opening_crawls: "",
+    episode_id:0,
     comment_count: 0
 }
 
@@ -51,9 +53,11 @@ export const initialAcc:movieAcc = {
 export interface Comment{
     id: string,
     comment: string;
+    ipAddress: string;
 }
 
 export const comment: Comment = {
     id: "",
-    comment:""
+    comment: "",
+    ipAddress:""
 }

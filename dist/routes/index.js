@@ -61,12 +61,13 @@ router.get('/movies', function (req, res) { return __awaiter(void 0, void 0, voi
     });
 }); });
 router.post('/comment', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, id, comment, response;
+    var _a, id, comment, ipAddress, response;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, id = _a.id, comment = _a.comment;
-                return [4 /*yield*/, getmovies_1.addComments({ id: id, comment: comment })];
+                ipAddress = req.connection.remoteAddress;
+                return [4 /*yield*/, getmovies_1.addComments({ id: id, comment: comment, ipAddress: ipAddress })];
             case 1:
                 response = _b.sent();
                 console.log('response was here', response);

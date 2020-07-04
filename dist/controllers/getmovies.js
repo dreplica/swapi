@@ -43,14 +43,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addComments = exports.getMovies = void 0;
+exports.getComments = exports.addComments = exports.getMovies = void 0;
 var axios_1 = __importDefault(require("axios"));
 var pgmodel_1 = __importDefault(require("../pgmodel"));
+var db = pgmodel_1.default.db, sql = pgmodel_1.default.sql;
 var getCommentCount = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var count;
     return __generator(this, function (_a) {
-        // const count = await db.query(sql`SELECT count(id) FROM comments WHERE title=${id}`)
-        // return count
-        return [2 /*return*/, 5];
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, db.query(sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["SELECT count(id) FROM comments WHERE id=", ""], ["SELECT count(id) FROM comments WHERE id=", ""])), id))];
+            case 1:
+                count = _a.sent();
+                return [2 /*return*/, count[0].count];
+        }
     });
 }); };
 exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -82,6 +87,7 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
                                     return [4 /*yield*/, count];
                                 case 2:
                                     accum = (_a.comment_count = _b.sent(),
+                                        _a.episode_id = val.episode_id,
                                         _a.name = val.title,
                                         _a.opening_crawls = val.opening_crawl,
                                         _a);
@@ -108,7 +114,7 @@ exports.addComments = function (body) { return __awaiter(void 0, void 0, void 0,
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, pgmodel_1.default.db.query(pgmodel_1.default.sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",current_timestamp) returning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",current_timestamp) returning *"])), body.id, body.comment))];
+                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) returning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) returning *"])), body.id, body.comment, body.ipAddress))];
             case 1:
                 comment = _a.sent();
                 return [2 /*return*/, { data: comment }];
@@ -119,4 +125,21 @@ exports.addComments = function (body) { return __awaiter(void 0, void 0, void 0,
         }
     });
 }); };
-var templateObject_1;
+exports.getComments = function (id) { return __awaiter(void 0, void 0, void 0, function () {
+    var comments, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, db.query(sql(templateObject_3 || (templateObject_3 = __makeTemplateObject([""], [""]))))];
+            case 1:
+                comments = _a.sent();
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                return [2 /*return*/, { error: "sorry that comment was not added, try again or check connection" }];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var templateObject_1, templateObject_2, templateObject_3;

@@ -3,10 +3,11 @@ import Axios from 'axios';
 import dbase from '../pgmodel';
 import { Movies, movieAcc, Comment } from '../types/movies';
 
+const {db,sql} = dbase
+
 const getCommentCount = async (id: number) => {
-	// const count = await db.query(sql`SELECT count(id) FROM comments WHERE title=${id}`)
-	// return count
-	return 5;
+	const count = await db.query(sql`SELECT count(id) FROM comments WHERE id=${id}`);
+	return count[0].count
 };
 
 export const getMovies = async () => {
@@ -27,6 +28,7 @@ export const getMovies = async () => {
 			const count = await getCommentCount(val.episode_id);
 			const accum: movieAcc = {
 				comment_count: await count,
+				episode_id:val.episode_id,
 				name: val.title,
 				opening_crawls: val.opening_crawl
 			};
@@ -44,11 +46,22 @@ export const getMovies = async () => {
 
 export const addComments = async (body: Comment) => {
 	try {
-		const comment = await dbase.db.query(dbase.sql`INSERT INTO comments
-		VALUES(${body.id},${body.comment},current_timestamp) returning *`);
+		const comment = await db.query(sql`INSERT INTO comments
+		VALUES(${body.id},${body.comment},${body.ipAddress},current_timestamp) returning *`);
 
 		return { data: comment };
+
 	} catch (error) {
 		return { error: "sorry couldn't add comment, please try again. Thanks" };
 	}
 };
+
+
+export const getComments = async (id:string) => {
+	try {
+		const comments = await db.query(sql``)
+		
+	} catch (error) {
+		return {error:"sorry that comment was not added, try again or check connection"}
+	}
+}

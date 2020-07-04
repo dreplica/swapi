@@ -12,6 +12,10 @@ exports.up = pgm => {
             type: 'VARCHAR(500)',
             notNUll:true
         },
+        ipaddress: {
+            type: 'VARCHAR(100)',
+            notNUll:true
+        },
         created: {
             type: 'timestamp',
             notNull: true,
@@ -20,4 +24,6 @@ exports.up = pgm => {
     })
 };
 
-exports.down = pgm => {};
+exports.down = pgm => {
+    pgm.dropTable('comments')
+};

@@ -20,9 +20,11 @@ exports.initialMovies = {
 exports.initialAcc = {
     name: "",
     opening_crawls: "",
+    episode_id: 0,
     comment_count: 0
 };
 exports.comment = {
     id: "",
-    comment: ""
+    comment: "",
+    ipAddress: ""
 };

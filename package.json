@@ -4,21 +4,24 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "migrate":" node-pg-migrate"
+    "migrate": " node-pg-migrate"
   },
   "dependencies": {
     "@databases/pg": "^2.1.2",
+    "@types/winston": "^2.4.4",
     "axios": "^0.19.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.1",
+    "express-winston": "^4.0.3",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "node-pg-migrate": "^5.2.0",
     "pg": "^8.2.1",
-    "ts-config": "^20.10.0"
+    "ts-config": "^20.10.0",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
