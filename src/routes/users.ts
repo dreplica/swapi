@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 
+import { getMovies } from './../controllers/getmovies';
+
 const router = express.Router();
 
 /* GET users listing. */
@@ -7,8 +9,10 @@ router.get('/', (_, res:Response)=> {
 	res.status(200).send('Hello please check the github for documentations');
 });
 
-router.get('/movies', (req:Request, res:Response)=> {
-	res.status(200).send('Hello please check the github for documentations');
+router.get('/movies', async (req: Request, res: Response) => {
+  const response = await getMovies()
+  console.log('response was here',response)
+	res.status(200).json(response);
 });
 
 

@@ -1,12 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var http_errors_1 = tslib_1.__importDefault(require("http-errors"));
-var express_1 = tslib_1.__importDefault(require("express"));
-var path_1 = tslib_1.__importDefault(require("path"));
-var cookie_parser_1 = tslib_1.__importDefault(require("cookie-parser"));
-var morgan_1 = tslib_1.__importDefault(require("morgan"));
-var users_1 = tslib_1.__importDefault(require("./routes/users"));
+var http_errors_1 = __importDefault(require("http-errors"));
+var express_1 = __importDefault(require("express"));
+var path_1 = __importDefault(require("path"));
+var cookie_parser_1 = __importDefault(require("cookie-parser"));
+var morgan_1 = __importDefault(require("morgan"));
+var users_1 = __importDefault(require("./routes/users"));
 var app = express_1.default();
 app.use(morgan_1.default('dev'));
 app.use(express_1.default.json());
