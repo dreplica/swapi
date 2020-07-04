@@ -69,7 +69,27 @@ var arrangeComments = function (comments) {
         return 1;
     });
 };
-var arrangeCharacters = function (character) {
+var arrangeCharacters = function (movie, sort) {
+    var copyComment = JSON.parse(JSON.stringify(movie));
+    var sortXtics = copyComment.sort(function (initial, later) {
+        switch (sort.sort) {
+            case "asc":
+                if (initial.name > later.name)
+                    return 1;
+                return -1;
+            case "desc":
+                if (initial.name > later.name)
+                    return -1;
+                return 1;
+            default:
+                return 1;
+        }
+    });
+    var filter = sortXtics.filter(function (character) {
+        return character.gender.toLowerCase() === sort.filter.toLowerCase();
+    });
+    var totaling = filter.reduce(function (acc, val) {
+    });
 };
 exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, function () {
     var data, copyData, getSort, getComment, error_1;
@@ -122,16 +142,16 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
         }
     });
 }); };
-exports.addComments = function (body) { return __awaiter(void 0, void 0, void 0, function () {
-    var comment, error_2;
+exports.addComments = function (comment) { return __awaiter(void 0, void 0, void 0, function () {
+    var commentResponse, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"])), body.id, body.comment, body.ipAddress))];
+                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"])), comment.id, comment.comment, comment.ipAddress))];
             case 1:
-                comment = _a.sent();
-                return [2 /*return*/, { data: comment }];
+                commentResponse = _a.sent();
+                return [2 /*return*/, { data: commentResponse }];
             case 2:
                 error_2 = _a.sent();
                 return [2 /*return*/, { error: "sorry couldn't add comment, please try again. Thanks" }];
@@ -157,8 +177,8 @@ exports.getComments = function (id) { return __awaiter(void 0, void 0, void 0, f
         }
     });
 }); };
-exports.getCharacters = function (character) { return __awaiter(void 0, void 0, void 0, function () {
-    var data, character_1, error_4;
+exports.getCharacters = function (sort) { return __awaiter(void 0, void 0, void 0, function () {
+    var data, character, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -166,8 +186,8 @@ exports.getCharacters = function (character) { return __awaiter(void 0, void 0, 
                 return [4 /*yield*/, axios_1.default.get('https://swapi.dev/api/films')];
             case 1:
                 data = (_a.sent()).data;
-                character_1 = arrangeCharacters(data.result);
-                return [2 /*return*/, { data: character_1 }];
+                character = arrangeCharacters(data.result, sort);
+                return [2 /*return*/, { data: character }];
             case 2:
                 error_4 = _a.sent();
                 return [2 /*return*/, { error: "Sorry we couldnt get this movie characters, can you try searching again" }];

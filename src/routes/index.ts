@@ -1,39 +1,56 @@
-import { addComments, getComments } from './../controllers/getmovies';
+import { CharacterSort } from './../types/movies';
+import { addComments, getComments, getCharacters } from '../controllers';
 import express, { Request, Response } from 'express';
 
-import { getMovies } from '../controllers/getmovies';
+import { getMovies } from '../controllers';
 
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', (_, res:Response)=> {
+router.get('/', (_, res: Response) => {
 	res.status(200).send('Hello please check the github for documentations');
 });
 
 router.get('/movies', async (req: Request, res: Response) => {
-  const response = await getMovies()
-  // console.log('response was here',response)
-	res.status(200).json(response);
+	const { data, error } = await getMovies();
+	if (data) {
+		return res.status(200).json(data);
+	}
+	return res.status(404).json(error);
 });
 
 router.get('/comment', async (req: Request, res: Response) => {
-  const { id } = req.query
+	const { id } = req.query;
 
-  const response = await getComments(<string> id)
-  
-  // console.log('response was here',response)
-	res.status(200).json(response);
+	const { data, error } = await getComments(<string>id);
+	if (data) {
+		return res.status(200).json(data);
+	}
+	return res.status(404).json(error);
 });
 
 router.post('/comment', async (req: Request, res: Response) => {
-  const { id, comment } = req.body
-  const ipAddress: string = req.connection.remoteAddress as string
-  
-  const response = await addComments({ id, comment,ipAddress })
-  
-  console.log('response was here',response)
-	res.status(200).json(response);
+	const { id, comment } = req.body;
+	const ipAddress: string = req.connection.remoteAddress as string;
+
+	const { data, error } = await addComments({ id, comment, ipAddress });
+
+	if (data) {
+		return res.status(200).json(data);
+	}
+	return res.status(404).json(error);
 });
 
+router.get('/characters', async (req: Request, res: Response) => {
+  const {movie,sort,filter} = req.query
+
+  const {data,error} = await getCharacters({movie,sort,filter} as CharacterSort)
+
+   if (data){
+    return res.status(200).json(data);
+    
+  }
+  return res.status(404).json(error);
+});
 
 export default router;

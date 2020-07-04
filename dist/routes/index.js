@@ -39,59 +39,74 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var getmovies_1 = require("./../controllers/getmovies");
+var controllers_1 = require("../controllers");
 var express_1 = __importDefault(require("express"));
-var getmovies_2 = require("../controllers/getmovies");
+var controllers_2 = require("../controllers");
 var router = express_1.default.Router();
 /* GET users listing. */
 router.get('/', function (_, res) {
     res.status(200).send('Hello please check the github for documentations');
 });
 router.get('/movies', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var response;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, getmovies_2.getMovies()
-                // console.log('response was here',response)
-            ];
+    var _a, data, error;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, controllers_2.getMovies()];
             case 1:
-                response = _a.sent();
-                // console.log('response was here',response)
-                res.status(200).json(response);
-                return [2 /*return*/];
+                _a = _b.sent(), data = _a.data, error = _a.error;
+                if (data) {
+                    return [2 /*return*/, res.status(200).json(data)];
+                }
+                return [2 /*return*/, res.status(404).json(error)];
         }
     });
 }); });
 router.get('/comment', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, response;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var id, _a, data, error;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
                 id = req.query.id;
-                return [4 /*yield*/, getmovies_1.getComments(id)
-                    // console.log('response was here',response)
-                ];
+                return [4 /*yield*/, controllers_1.getComments(id)];
             case 1:
-                response = _a.sent();
-                // console.log('response was here',response)
-                res.status(200).json(response);
-                return [2 /*return*/];
+                _a = _b.sent(), data = _a.data, error = _a.error;
+                if (data) {
+                    return [2 /*return*/, res.status(200).json(data)];
+                }
+                return [2 /*return*/, res.status(404).json(error)];
         }
     });
 }); });
 router.post('/comment', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, id, comment, ipAddress, response;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    var _a, id, comment, ipAddress, _b, data, error;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
                 _a = req.body, id = _a.id, comment = _a.comment;
                 ipAddress = req.connection.remoteAddress;
-                return [4 /*yield*/, getmovies_1.addComments({ id: id, comment: comment, ipAddress: ipAddress })];
+                return [4 /*yield*/, controllers_1.addComments({ id: id, comment: comment, ipAddress: ipAddress })];
             case 1:
-                response = _b.sent();
-                console.log('response was here', response);
-                res.status(200).json(response);
-                return [2 /*return*/];
+                _b = _c.sent(), data = _b.data, error = _b.error;
+                if (data) {
+                    return [2 /*return*/, res.status(200).json(data)];
+                }
+                return [2 /*return*/, res.status(404).json(error)];
+        }
+    });
+}); });
+router.get('/characters', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, movie, sort, filter, _b, data, error;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _a = req.query, movie = _a.movie, sort = _a.sort, filter = _a.filter;
+                return [4 /*yield*/, controllers_1.getCharacters({ movie: movie, sort: sort, filter: filter })];
+            case 1:
+                _b = _c.sent(), data = _b.data, error = _b.error;
+                if (data) {
+                    return [2 /*return*/, res.status(200).json(data)];
+                }
+                return [2 /*return*/, res.status(404).json(error)];
         }
     });
 }); });
