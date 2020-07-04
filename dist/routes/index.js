@@ -51,10 +51,29 @@ router.get('/movies', function (req, res) { return __awaiter(void 0, void 0, voi
     var response;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, getmovies_2.getMovies()];
+            case 0: return [4 /*yield*/, getmovies_2.getMovies()
+                // console.log('response was here',response)
+            ];
             case 1:
                 response = _a.sent();
-                console.log('response was here', response);
+                // console.log('response was here',response)
+                res.status(200).json(response);
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.get('/comment', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, response;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = req.query.id;
+                return [4 /*yield*/, getmovies_1.getComments(id)
+                    // console.log('response was here',response)
+                ];
+            case 1:
+                response = _a.sent();
+                // console.log('response was here',response)
                 res.status(200).json(response);
                 return [2 /*return*/];
         }

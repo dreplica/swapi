@@ -58,6 +58,17 @@ var getCommentCount = function (id) { return __awaiter(void 0, void 0, void 0, f
         }
     });
 }); };
+var arrangeComments = function (comments) {
+    var copyComment = JSON.parse(JSON.stringify(comments));
+    return copyComment.sort(function (initial, later) {
+        var initialDate = new Date(initial.created).getTime();
+        var laterDate = new Date(later.created).getTime();
+        if (initialDate - laterDate > 0) {
+            return -1;
+        }
+        return 1;
+    });
+};
 exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, function () {
     var data, copyData, getSort, getComment, error_1;
     return __generator(this, function (_a) {
@@ -68,13 +79,14 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
             case 1:
                 data = (_a.sent()).data;
                 copyData = JSON.parse(JSON.stringify(data.results));
+                console.log(copyData);
                 getSort = copyData.sort(function (initial, later) {
                     var initialDate = new Date(initial.release_date).getTime();
                     var laterDate = new Date(later.release_date).getTime();
-                    if (initialDate - laterDate > 1) {
-                        return initial;
+                    if (initialDate - laterDate > 0) {
+                        return 1;
                     }
-                    return later;
+                    return -1;
                 });
                 return [4 /*yield*/, getSort.reduce(function (acc, val) { return __awaiter(void 0, void 0, void 0, function () {
                         var count, accum, _a;
@@ -109,15 +121,15 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 exports.addComments = function (body) { return __awaiter(void 0, void 0, void 0, function () {
-    var comment, error_2;
+    var comment_1, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) returning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) returning *"])), body.id, body.comment, body.ipAddress))];
+                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"])), body.id, body.comment, body.ipAddress))];
             case 1:
-                comment = _a.sent();
-                return [2 /*return*/, { data: comment }];
+                comment_1 = _a.sent();
+                return [2 /*return*/, { data: comment_1 }];
             case 2:
                 error_2 = _a.sent();
                 return [2 /*return*/, { error: "sorry couldn't add comment, please try again. Thanks" }];
@@ -126,18 +138,19 @@ exports.addComments = function (body) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 exports.getComments = function (id) { return __awaiter(void 0, void 0, void 0, function () {
-    var comments, error_3;
+    var comments, orderedComments, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, db.query(sql(templateObject_3 || (templateObject_3 = __makeTemplateObject([""], [""]))))];
+                return [4 /*yield*/, db.query(sql(templateObject_3 || (templateObject_3 = __makeTemplateObject(["SELECT ipaddress,comment,id,created \n\t\tFROM comments\n\t\tWHERE id=", ""], ["SELECT ipaddress,comment,id,created \n\t\tFROM comments\n\t\tWHERE id=", ""])), id))];
             case 1:
                 comments = _a.sent();
-                return [3 /*break*/, 3];
+                orderedComments = arrangeComments(comments);
+                return [2 /*return*/, { data: orderedComments }];
             case 2:
                 error_3 = _a.sent();
-                return [2 /*return*/, { error: "sorry that comment was not added, try again or check connection" }];
+                return [2 /*return*/, { error: 'sorry that comment was not found, try again or check connection' }];
             case 3: return [2 /*return*/];
         }
     });

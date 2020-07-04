@@ -1,4 +1,4 @@
-import { addComments } from './../controllers/getmovies';
+import { addComments, getComments } from './../controllers/getmovies';
 import express, { Request, Response } from 'express';
 
 import { getMovies } from '../controllers/getmovies';
@@ -12,7 +12,16 @@ router.get('/', (_, res:Response)=> {
 
 router.get('/movies', async (req: Request, res: Response) => {
   const response = await getMovies()
-  console.log('response was here',response)
+  // console.log('response was here',response)
+	res.status(200).json(response);
+});
+
+router.get('/comment', async (req: Request, res: Response) => {
+  const { id } = req.query
+
+  const response = await getComments(<string> id)
+  
+  // console.log('response was here',response)
 	res.status(200).json(response);
 });
 
