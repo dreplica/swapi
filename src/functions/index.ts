@@ -1,12 +1,11 @@
 import { DB_COMMENT } from './../controllers/index';
 import dbase from '../pgmodel';
 import { Character, CharacterSort } from '../types/movies';
-import { stringify } from 'querystring';
 
 const { db, sql } = dbase;
 
 interface ACCUM extends Omit<Character, 'height'> {
-	height: { cm: number; feet: number };
+	height: { cm: string; feet: string };
 }
 
 export const getCommentCount = async (id: number) => {
@@ -31,8 +30,11 @@ export const arrangeComments = (comments: DB_COMMENT[]) => {
 export const arrangeCharacters = (movie: Character[], sort: CharacterSort) => {
 	const copyComment: Character[] = JSON.parse(JSON.stringify(movie));
 
-	const filter = copyComment.filter((character) => {
-		return character.gender.toLowerCase() === sort.filter.toLowerCase();
+    const filter = copyComment.filter((character) => {
+        if (sort.filter) {
+            return character.gender.toLowerCase() === sort.filter.toLowerCase()
+        }
+        return true
 	});
 
 	const sortXtics = (accum: ACCUM[]) =>
@@ -54,10 +56,10 @@ export const arrangeCharacters = (movie: Character[], sort: CharacterSort) => {
 		const person = {
 			...val,
 			height: {
-				cm: val.height,
-				feet: Math.floor(val.height * 0.0328084)
+				cm: val.height+'cm',
+				feet: Math.floor(val.height * 0.0328084)+"ft"
 			}
-		};
+        };
 		return sortXtics(acc.concat(person));
 	}, []);
 

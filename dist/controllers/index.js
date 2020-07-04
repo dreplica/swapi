@@ -135,20 +135,43 @@ exports.getComments = function (id) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 exports.getCharacters = function (sort) { return __awaiter(void 0, void 0, void 0, function () {
-    var data, character_1, error_4;
+    var response, getAllCharacters, character_1, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, axios_1.default.get('https://swapi.dev/api/films')];
+                console.log("whats hapening man", sort);
+                _a.label = 1;
             case 1:
-                data = (_a.sent()).data;
-                character_1 = functions_1.arrangeCharacters(data.result, sort);
-                return [2 /*return*/, { data: character_1 }];
+                _a.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, axios_1.default.get("https://swapi.dev/api/films/" + sort.movie)];
             case 2:
+                response = (_a.sent()).data;
+                console.log(response.characters);
+                return [4 /*yield*/, response.characters.reduce(function (acc, val) { return __awaiter(void 0, void 0, void 0, function () {
+                        var data;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4 /*yield*/, axios_1.default.get(val)
+                                    // console.log('accval has come to stay :>> ', data);
+                                ];
+                                case 1:
+                                    data = (_a.sent()).data;
+                                    // console.log('accval has come to stay :>> ', data);
+                                    acc.then(function (person) {
+                                        person.push(data);
+                                    });
+                                    return [2 /*return*/, acc];
+                            }
+                        });
+                    }); }, Promise.resolve([]))];
+            case 3:
+                getAllCharacters = _a.sent();
+                character_1 = functions_1.arrangeCharacters(getAllCharacters, sort);
+                return [2 /*return*/, { data: character_1 }];
+            case 4:
                 error_4 = _a.sent();
-                return [2 /*return*/, { error: 'Sorry we couldnt get this movie characters, can you try searching again' }];
-            case 3: return [2 /*return*/];
+                return [2 /*return*/, { error: 'Sorry we couldnt get this movie characters, can you try searching again \n' + error_4.message }];
+            case 5: return [2 /*return*/];
         }
     });
 }); };

@@ -82,7 +82,10 @@ exports.arrangeComments = function (comments) {
 exports.arrangeCharacters = function (movie, sort) {
     var copyComment = JSON.parse(JSON.stringify(movie));
     var filter = copyComment.filter(function (character) {
-        return character.gender.toLowerCase() === sort.filter.toLowerCase();
+        if (sort.filter) {
+            return character.gender.toLowerCase() === sort.filter.toLowerCase();
+        }
+        return true;
     });
     var sortXtics = function (accum) {
         return accum.sort(function (initial, later) {
@@ -102,8 +105,8 @@ exports.arrangeCharacters = function (movie, sort) {
     };
     var result = filter.reduce(function (acc, val) {
         var person = __assign(__assign({}, val), { height: {
-                cm: val.height,
-                feet: Math.floor(val.height * 0.0328084)
+                cm: val.height + 'cm',
+                feet: Math.floor(val.height * 0.0328084) + "ft"
             } });
         return sortXtics(acc.concat(person));
     }, []);

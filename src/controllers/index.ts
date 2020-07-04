@@ -1,7 +1,8 @@
+import { character } from './../types/movies';
 import Axios from 'axios';
 
 import dbase from '../pgmodel';
-import { Movies, movieAcc, Comment, Character, character, CharacterSort } from '../types/movies';
+import { Movies, movieAcc, Comment, Character, CharacterSort } from '../types/movies';
 import { getCommentCount, arrangeCharacters, arrangeComments } from '../functions';
 
 export type DB_COMMENT = Comment & { created: string };
@@ -70,13 +71,28 @@ export const getComments = async (id: string) => {
 };
 
 export const getCharacters = async (sort: CharacterSort) => {
+	console.log("whats hapening man",sort)
 	try {
-		const { data } = await Axios.get('https://swapi.dev/api/films');
+		const { data:response } = await Axios.get(`https://swapi.dev/api/films/${sort.movie}`);
 
-		const character = arrangeCharacters(data.result, sort);
+		console.log(response.characters) 
+
+		const getAllCharacters = await response.characters.reduce(
+			async (acc: Promise<Character[]>, val: string) => {
+				const {data} = await Axios.get(val)
+				// console.log('accval has come to stay :>> ', data);
+				acc.then((person) => {
+					person.push(data)
+				})
+				return acc
+			},
+			Promise.resolve([])
+		);
+
+		const character = arrangeCharacters(getAllCharacters,sort);
 
 		return { data: character };
 	} catch (error) {
-		return { error: 'Sorry we couldnt get this movie characters, can you try searching again' };
+		return { error: 'Sorry we couldnt get this movie characters, can you try searching again \n'+error.message };
 	}
 };
