@@ -1,4 +1,8 @@
 "use strict";
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,6 +45,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addComments = exports.getMovies = void 0;
 var axios_1 = __importDefault(require("axios"));
+var pgmodel_1 = __importDefault(require("../pgmodel"));
 var getCommentCount = function (id) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         // const count = await db.query(sql`SELECT count(id) FROM comments WHERE title=${id}`)
@@ -98,15 +103,20 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 exports.addComments = function (body) { return __awaiter(void 0, void 0, void 0, function () {
+    var comment, error_2;
     return __generator(this, function (_a) {
-        try {
-            // const comment = db.query(sql`INSERT INTO comments
-            // VALUES(${body.id},${body.comment},current_timestamp) returning *`);
-            return [2 /*return*/, { data: 'comment' }];
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, pgmodel_1.default.db.query(pgmodel_1.default.sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",current_timestamp) returning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",current_timestamp) returning *"])), body.id, body.comment))];
+            case 1:
+                comment = _a.sent();
+                return [2 /*return*/, { data: comment }];
+            case 2:
+                error_2 = _a.sent();
+                return [2 /*return*/, { error: "sorry couldn't add comment, please try again. Thanks" }];
+            case 3: return [2 /*return*/];
         }
-        catch (error) {
-            return [2 /*return*/, { error: "sorry couldn't add comment, please try again. Thanks" }];
-        }
-        return [2 /*return*/];
     });
 }); };
+var templateObject_1;

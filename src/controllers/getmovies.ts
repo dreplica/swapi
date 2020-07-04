@@ -1,4 +1,6 @@
 import Axios from 'axios';
+
+import dbase from '../pgmodel';
 import { Movies, movieAcc, Comment } from '../types/movies';
 
 const getCommentCount = async (id: number) => {
@@ -42,10 +44,10 @@ export const getMovies = async () => {
 
 export const addComments = async (body: Comment) => {
 	try {
-		// const comment = db.query(sql`INSERT INTO comments
-		// VALUES(${body.id},${body.comment},current_timestamp) returning *`);
+		const comment = await dbase.db.query(dbase.sql`INSERT INTO comments
+		VALUES(${body.id},${body.comment},current_timestamp) returning *`);
 
-		return { data: 'comment' };
+		return { data: comment };
 	} catch (error) {
 		return { error: "sorry couldn't add comment, please try again. Thanks" };
 	}

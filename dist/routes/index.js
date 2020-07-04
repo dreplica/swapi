@@ -39,8 +39,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var getmovies_1 = require("./../controllers/getmovies");
 var express_1 = __importDefault(require("express"));
-var getmovies_1 = require("../controllers/getmovies");
+var getmovies_2 = require("../controllers/getmovies");
 var router = express_1.default.Router();
 /* GET users listing. */
 router.get('/', function (_, res) {
@@ -50,9 +51,24 @@ router.get('/movies', function (req, res) { return __awaiter(void 0, void 0, voi
     var response;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, getmovies_1.getMovies()];
+            case 0: return [4 /*yield*/, getmovies_2.getMovies()];
             case 1:
                 response = _a.sent();
+                console.log('response was here', response);
+                res.status(200).json(response);
+                return [2 /*return*/];
+        }
+    });
+}); });
+router.post('/comment', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, id, comment, response;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, id = _a.id, comment = _a.comment;
+                return [4 /*yield*/, getmovies_1.addComments({ id: id, comment: comment })];
+            case 1:
+                response = _b.sent();
                 console.log('response was here', response);
                 res.status(200).json(response);
                 return [2 /*return*/];
