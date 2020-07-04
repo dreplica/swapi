@@ -60,6 +60,25 @@ export interface Character {
     vehicles?: string[];
 }
 
+export const character:Character =  {
+    birth_year: "",
+    eye_color: "",
+    films: [],
+    gender: "",
+    hair_color: "",
+    height: 0,
+    homeworld: "",
+    mass: 0,
+    name: "",
+    skin_color: "",
+    created: "",
+    edited: "",
+    species: [],
+    starships: [],
+    url: "",
+    vehicles: [],
+}
+
 export interface CharacterSort {
 	movie: string;
 	filter: string;

@@ -1,54 +1,12 @@
 import Axios from 'axios';
+
 import dbase from '../pgmodel';
-import { Movies, movieAcc, Comment, Character, CharacterSort } from '../types/movies';
+import { Movies, movieAcc, Comment, Character, character, CharacterSort } from '../types/movies';
+import { getCommentCount, arrangeCharacters, arrangeComments } from '../functions';
 
-type DB_COMMENT = Comment & { created: string };
+export type DB_COMMENT = Comment & { created: string };
+
 const { db, sql } = dbase;
-
-const getCommentCount = async (id: number) => {
-	const count = await db.query(sql`SELECT count(id) FROM comments WHERE id=${id}`);
-	return count[0].count;
-};
-
-const arrangeComments = (comments: DB_COMMENT[]) => {
-	const copyComment:DB_COMMENT[] = JSON.parse(JSON.stringify(comments));
-
-	return copyComment.sort((initial: DB_COMMENT, later: DB_COMMENT) => {
-		const initialDate = new Date(initial.created).getTime();
-		const laterDate = new Date(later.created).getTime();
-
-		if (initialDate - laterDate > 0) {
-			return -1;
-		}
-		return 1;
-	});
-};
-
-const arrangeCharacters = (movie:Character[],sort:CharacterSort) => {
-	const copyComment:Character[] = JSON.parse(JSON.stringify(movie));
-
-	const sortXtics = copyComment.sort((initial: Character, later: Character) => {
-		switch (sort.sort) {
-			case "asc":
-				if(initial.name > later.name ) return 1
-				return -1
-			case "desc":
-				if(initial.name > later.name ) return -1
-				return 1
-			
-			default:
-				return 1;
-		}
-	})
-
-	const filter = sortXtics.filter((character) => {
-		return character.gender.toLowerCase() === sort.filter.toLowerCase()
-	})
-
-	const totaling = filter.reduce((acc, val) => {
-		
-	})
-}
 
 export const getMovies = async () => {
 	try {
@@ -113,14 +71,12 @@ export const getComments = async (id: string) => {
 
 export const getCharacters = async (sort: CharacterSort) => {
 	try {
-
 		const { data } = await Axios.get('https://swapi.dev/api/films');
-		
-		const character = arrangeCharacters(data.result,sort)
 
-		return {data: character}
+		const character = arrangeCharacters(data.result, sort);
 
+		return { data: character };
 	} catch (error) {
-		return {error:"Sorry we couldnt get this movie characters, can you try searching again"}
+		return { error: 'Sorry we couldnt get this movie characters, can you try searching again' };
 	}
 };

@@ -46,51 +46,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCharacters = exports.getComments = exports.addComments = exports.getMovies = void 0;
 var axios_1 = __importDefault(require("axios"));
 var pgmodel_1 = __importDefault(require("../pgmodel"));
+var functions_1 = require("../functions");
 var db = pgmodel_1.default.db, sql = pgmodel_1.default.sql;
-var getCommentCount = function (id) { return __awaiter(void 0, void 0, void 0, function () {
-    var count;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, db.query(sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["SELECT count(id) FROM comments WHERE id=", ""], ["SELECT count(id) FROM comments WHERE id=", ""])), id))];
-            case 1:
-                count = _a.sent();
-                return [2 /*return*/, count[0].count];
-        }
-    });
-}); };
-var arrangeComments = function (comments) {
-    var copyComment = JSON.parse(JSON.stringify(comments));
-    return copyComment.sort(function (initial, later) {
-        var initialDate = new Date(initial.created).getTime();
-        var laterDate = new Date(later.created).getTime();
-        if (initialDate - laterDate > 0) {
-            return -1;
-        }
-        return 1;
-    });
-};
-var arrangeCharacters = function (movie, sort) {
-    var copyComment = JSON.parse(JSON.stringify(movie));
-    var sortXtics = copyComment.sort(function (initial, later) {
-        switch (sort.sort) {
-            case "asc":
-                if (initial.name > later.name)
-                    return 1;
-                return -1;
-            case "desc":
-                if (initial.name > later.name)
-                    return -1;
-                return 1;
-            default:
-                return 1;
-        }
-    });
-    var filter = sortXtics.filter(function (character) {
-        return character.gender.toLowerCase() === sort.filter.toLowerCase();
-    });
-    var totaling = filter.reduce(function (acc, val) {
-    });
-};
 exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, function () {
     var data, copyData, getSort, getComment, error_1;
     return __generator(this, function (_a) {
@@ -114,7 +71,7 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
                         var count, accum, _a;
                         return __generator(this, function (_b) {
                             switch (_b.label) {
-                                case 0: return [4 /*yield*/, getCommentCount(val.episode_id)];
+                                case 0: return [4 /*yield*/, functions_1.getCommentCount(val.episode_id)];
                                 case 1:
                                     count = _b.sent();
                                     _a = {};
@@ -148,7 +105,7 @@ exports.addComments = function (comment) { return __awaiter(void 0, void 0, void
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"])), comment.id, comment.comment, comment.ipAddress))];
+                return [4 /*yield*/, db.query(sql(templateObject_1 || (templateObject_1 = __makeTemplateObject(["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"], ["INSERT INTO comments\n\t\tVALUES(", ",", ",", ",current_timestamp) \n\t\treturning *"])), comment.id, comment.comment, comment.ipAddress))];
             case 1:
                 commentResponse = _a.sent();
                 return [2 /*return*/, { data: commentResponse }];
@@ -165,10 +122,10 @@ exports.getComments = function (id) { return __awaiter(void 0, void 0, void 0, f
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, db.query(sql(templateObject_3 || (templateObject_3 = __makeTemplateObject(["SELECT ipaddress,comment,id,created \n\t\tFROM comments\n\t\tWHERE id=", ""], ["SELECT ipaddress,comment,id,created \n\t\tFROM comments\n\t\tWHERE id=", ""])), id))];
+                return [4 /*yield*/, db.query(sql(templateObject_2 || (templateObject_2 = __makeTemplateObject(["SELECT ipaddress,comment,id,created \n\t\tFROM comments\n\t\tWHERE id=", ""], ["SELECT ipaddress,comment,id,created \n\t\tFROM comments\n\t\tWHERE id=", ""])), id))];
             case 1:
                 comments = _a.sent();
-                orderedComments = arrangeComments(comments);
+                orderedComments = functions_1.arrangeComments(comments);
                 return [2 /*return*/, { data: orderedComments }];
             case 2:
                 error_3 = _a.sent();
@@ -178,7 +135,7 @@ exports.getComments = function (id) { return __awaiter(void 0, void 0, void 0, f
     });
 }); };
 exports.getCharacters = function (sort) { return __awaiter(void 0, void 0, void 0, function () {
-    var data, character, error_4;
+    var data, character_1, error_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -186,13 +143,13 @@ exports.getCharacters = function (sort) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, axios_1.default.get('https://swapi.dev/api/films')];
             case 1:
                 data = (_a.sent()).data;
-                character = arrangeCharacters(data.result, sort);
-                return [2 /*return*/, { data: character }];
+                character_1 = functions_1.arrangeCharacters(data.result, sort);
+                return [2 /*return*/, { data: character_1 }];
             case 2:
                 error_4 = _a.sent();
-                return [2 /*return*/, { error: "Sorry we couldnt get this movie characters, can you try searching again" }];
+                return [2 /*return*/, { error: 'Sorry we couldnt get this movie characters, can you try searching again' }];
             case 3: return [2 /*return*/];
         }
     });
 }); };
-var templateObject_1, templateObject_2, templateObject_3;
+var templateObject_1, templateObject_2;
