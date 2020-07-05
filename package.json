@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node-pg-migrate up && node ./bin/www",
     "migrate": " node-pg-migrate"
   },
   "dependencies": {
