@@ -13,7 +13,7 @@ Install all dependencies using `yarn` then run `yarn start` and you're all good
 
 ### or 
 
-You if you have docker installed on your computer, run `docker-compose up`
+if you have docker installed on your computer, run `docker-compose up`
 
 
 ## END POINTS - /api/ (base endpoint url)
