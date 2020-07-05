@@ -1,4 +1,5 @@
-# API DOCUMENTATION
+# API DOCUMENTATION 
+link to api http://starwpi.herokuapp.com/api/
 ###
 This is an API that uses https://swapi.dev/api to provide Star Wars characters, films and comment. The work is done using :
 - Node (Express)
@@ -10,9 +11,6 @@ This is an API that uses https://swapi.dev/api to provide Star Wars characters, 
 To test the API, you can clone this repo, you need to have npm/yarn, node, installed on your computer and setup pgadmin to run the application.
 Install all dependencies using `yarn` then run `yarn start` and you're all good
 
-### or
-
-pull the docker build file from https....... and do a docker run to try test the image, use port 8080 as specified from the container inspect.
 
 ## END POINTS - /api/ (base endpoint url)
 - `GET /movies`: it returns all movies with their name.
