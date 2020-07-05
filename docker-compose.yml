@@ -17,3 +17,4 @@ services:
     environment:
       POSTGRES_USER: swapi
       POSTGRES_DB: swapi
+      POSTGRES_HOST_AUTH_METHOD: trust

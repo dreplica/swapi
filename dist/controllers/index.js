@@ -77,6 +77,7 @@ exports.getMovies = function () { return __awaiter(void 0, void 0, void 0, funct
                                     return [4 /*yield*/, count];
                                 case 2:
                                     accum = (_a.comment_count = _b.sent(),
+                                        _a.releaseDate = val.release_date,
                                         _a.episode_id = val.episode_id,
                                         _a.name = val.title,
                                         _a.opening_crawls = val.opening_crawl,

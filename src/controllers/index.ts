@@ -28,6 +28,7 @@ export const getMovies = async () => {
 			const count = await getCommentCount(val.episode_id);
 			const accum: movieAcc = {
 				comment_count: await count,
+				releaseDate:val.release_date,
 				episode_id: val.episode_id,
 				name: val.title,
 				opening_crawls: val.opening_crawl

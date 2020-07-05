@@ -47,7 +47,7 @@ var router = express_1.default.Router();
 router.get('/', function (_, res) {
     res.status(200).send('Hello please check the github for documentations');
 });
-router.get('/movies', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router.get('/movies', function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, data, error;
     return __generator(this, function (_b) {
         switch (_b.label) {

@@ -11,7 +11,7 @@ router.get('/', (_, res: Response) => {
 	res.status(200).send('Hello please check the github for documentations');
 });
 
-router.get('/movies', async (req: Request, res: Response) => {
+router.get('/movies', async (_: Request, res: Response) => {
 	const { data, error } = await getMovies();
 	if (data) {
 		return res.status(200).json(data);

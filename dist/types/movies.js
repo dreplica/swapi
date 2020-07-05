@@ -4,6 +4,7 @@ exports.character = exports.initialAcc = void 0;
 exports.initialAcc = {
     name: '',
     opening_crawls: '',
+    releaseDate: "",
     episode_id: 0,
     comment_count: 0
 };

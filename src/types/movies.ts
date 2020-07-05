@@ -18,15 +18,17 @@ export interface Movies {
 
 
 export interface movieAcc {
-	name: string;
-	episode_id: number;
+    name: string;
+    episode_id: number;
+    releaseDate: string;
 	opening_crawls: string;
 	comment_count: number;
 }
 
 export const initialAcc: movieAcc = {
 	name: '',
-	opening_crawls: '',
+    opening_crawls: '',
+    releaseDate:"",
 	episode_id: 0,
 	comment_count: 0
 };
