@@ -30,7 +30,7 @@ router.get('/comment/:id', async (req: Request, res: Response) => {
 
 router.post('/comment', async (req: Request, res: Response) => {
 	const { id, comment } = req.body;
-	const ipAddress: string = req.connection.remoteAddress as string;
+	const ipAddress: string = req.ip as string;
 	const { data, error } = await addComments({ id, comment, ipAddress });
 
 	if (data) {

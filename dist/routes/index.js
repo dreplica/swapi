@@ -83,7 +83,7 @@ router.post('/comment', function (req, res) { return __awaiter(void 0, void 0, v
         switch (_c.label) {
             case 0:
                 _a = req.body, id = _a.id, comment = _a.comment;
-                ipAddress = req.connection.remoteAddress;
+                ipAddress = req.ip;
                 return [4 /*yield*/, controllers_1.addComments({ id: id, comment: comment, ipAddress: ipAddress })];
             case 1:
                 _b = _c.sent(), data = _b.data, error = _b.error;
