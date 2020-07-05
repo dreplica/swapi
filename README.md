@@ -11,6 +11,10 @@ This is an API that uses https://swapi.dev/api to provide Star Wars characters, 
 To test the API, you can clone this repo, you need to have npm/yarn, node, installed on your computer and setup pgadmin to run the application.
 Install all dependencies using `yarn` then run `yarn start` and you're all good
 
+### or 
+
+You if you have docker installed on your computer, run `docker-compose up`
+
 
 ## END POINTS - /api/ (base endpoint url)
 - `GET /movies`: it returns all movies with their name.
@@ -26,9 +30,9 @@ height specified in measurement of cm and ft
     - `sort`: it sorts the returned value by `character name` can be specified `asc` for ascending and `desc` for descending
     
 ## RESPONSE
-- `GET /movies`:
+- `GET /movies`: 
   `{
-	characters: string[];
+	characters: string[]; 
 	created: string;
 	director: string;
 	edited: string;
@@ -43,20 +47,23 @@ height specified in measurement of cm and ft
 	url: string;
 	vehicles: string[];
 }`
-- `GET /comment/:id`: `{
+- `GET /comment/:id`: 
+`{
 	id: string;
 	comment: string;
 	ipAddress: string;
 }`
 
-- `POST /comment`:`{
+- `POST /comment`: 
+`{
 	id: string;
   episodeid:string;
 	comment: string;
 	ipAddress: string;
 }`
 
-- `GET /characters/?movie=1&sort=asc&filter=female`:`{
+- `GET /characters/?movie=1&sort=asc&filter=female`: 
+`{
     birth_year?: string;
     eye_color?: string;
     films?: string [];
