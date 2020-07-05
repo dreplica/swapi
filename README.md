@@ -24,7 +24,7 @@ You if you have docker installed on your computer, run `docker-compose up`
   - 'comment`: it represents the comment text, its length should not exceed 500.
 - `GET /characters/?movie=1&sort=asc&filter=female`: it provides characters from a particular movie, with the total amount of characters and their 
 height specified in measurement of cm and ft
-   #### `/character` query object
+   #### `/characters` query object
     - `movie`: it takes the episode_id for a movie.
     - `filter`: it filters gender  for `male or female` if not specified it returns random gender.
     - `sort`: it sorts the returned value by `character name` can be specified `asc` for ascending and `desc` for descending
